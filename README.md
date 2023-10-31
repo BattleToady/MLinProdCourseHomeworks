@@ -1,5 +1,9 @@
 # MLinProdCourseHomeworks
 
+Project for course "Machine Learning in Production"
+
+# ML Design Docs
+
 ## 1. Overview
 A summary of the doc's purpose, problem, solution, and desired outcome, usually in 3-5 sentences.
 
