@@ -5,50 +5,50 @@ Project for course "Machine Learning in Production"
 # ML Design Docs
 
 ## 1. Overview
-A summary of the doc's purpose, problem, solution, and desired outcome, usually in 3-5 sentences.
+This project should solve task of predicting entrace in university(classification) with realistic predict proba to give more information to applicants. I will use ML models, what will be trained on data from previous years campaigns,
 
 ## 2. Motivation
-Why the problem is important to solve, and why now.
+In Ukraine there are more then 250k applicants annually. Majority of them would like to have app which could predict their entrace on budget form and give information as probability of it.
 
 ## 3. Success metrics
-Usually framed as business goals, such as increased customer engagement (e.g., CTR, DAU), revenue, or reduced cost.
+It's seasonal need with low customer lifetime but with high demand. So, our choice is YAU(Yearly active users).
 
 ## 4. Requirements & Constraints
-Functional requirements are those that should be met to ship the project. They should be described in terms of the customer perspective and benefit. (See this for more details.)
+Functional requirements: app has to give prediction of applicant's entrance based on his input.
 
-Non-functional/technical requirements are those that define system quality and how the system should be implemented. These include performance (throughput, latency, error rates), cost (infra cost, ops effort), security, data privacy, etc.
-
-Constraints can come in the form of non-functional requirements (e.g., cost below $x a month, p99 latency < yms)
+Non-functional/technical requirements: api server(GCP), web input form and ml model. Saving inputs of users into db for future analytics.
+Cost < $x * 250k(count of customers) * 7(mean count of customer requests) < $3 * 1 750 000(api calls)
+p99 latency < yms
 
 ### 4.1 What's in-scope & out-of-scope?
-Some problems are too big to solve all at once. Be clear about what's out of scope.
+-
 
 ## 5. Methodology
 ### 5.1. Problem statement
-How will you frame the problem? For example, fraud detection can be framed as an unsupervised (outlier detection, graph cluster) or supervised problem (e.g., classification).
+supervised learning(classification) + probability calibration
 
 ### 5.2. Data
-What data will you use to train your model? What input data is needed during serving?
+Parsing data from abit-poisk.org
 
 ### 5.3. Techniques
-What machine learning techniques will you use? How will you clean and prepare the data (e.g., excluding outliers) and create features?
+Cleaning(NaN, Duplicates, Outliers)
+Scaling(MinMaxScaler)
+UnderSampler(to remove imbalace of classes)
+Feature Engineering(getting the ratio of mark to average mark) 
+Some classic model(from sklearn)
 
 ### 5.4. Experimentation & Validation
-How will you validate your approach offline? What offline evaluation metrics will you use?
-
-If you're A/B testing, how will you assign treatment and control (e.g., customer vs. session-based) and what metrics will you measure? What are the success and guardrail metrics?
+Group KFold + F1-score - offline
 
 ### 5.5. Human-in-the-loop
-How will you incorporate human intervention into your ML system (e.g., product/customer exclusion lists)?
+-
 
 ## 6. Implementation
 ### 6.1. High-level design
-
-
-Start by providing a big-picture view. System-context diagrams and data-flow diagrams work well.
+![image](https://github.com/BattleToady/MLinProdCourseHomeworks/assets/89700552/6995971c-1fe7-4563-8b81-870826c8e637)
 
 ### 6.2. Infra
-How will you host your system? On-premise, cloud, or hybrid? This will define the rest of this section
+GCP
 
 ### 6.3. Performance (Throughput, Latency)
 How will your system meet the throughput and latency requirements? Will it scale vertically or horizontally?
