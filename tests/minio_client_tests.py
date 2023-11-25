@@ -1,5 +1,5 @@
 import pytest
-from minio import minio_client
+from data import minio_client
 
 bucket_name = "example-bucket"
 file_to_upload = "example.txt"
