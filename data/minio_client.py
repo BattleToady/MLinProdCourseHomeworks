@@ -1,11 +1,12 @@
+import os
 from minio import Minio
 from minio.error import ResponseError
 
 # Initialize MinIO client
 minio_client = Minio(
     "10.244.0.20:9000",  # MinIO server endpoint
-    access_key="6BECLESS4YMLACAXL0PR",
-    secret_key="LnfbL0Ouo4E1OISF3KDGEOX225TBFEe1ujcuEwye",
+    access_key=os.environ.get('MINIO_ACCESS_KEY'),
+    secret_key=os.environ.get('MINIO_SECRET_KEY'),
     secure=False  
 )
 
