@@ -10,7 +10,8 @@ How to deploy label-studio:
 
 3. Create project, Import data and add our labeling interface code:
 
-```<View>
+```
+<View>
     <Header value="Table with {key: value} pairs"/>
     <Table name="table" value="$json"/>
     <Choices name="choice" toName="table">
