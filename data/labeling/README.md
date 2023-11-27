@@ -1,6 +1,6 @@
 How to deploy label-studio:
 
-1. Install label-studio by pip or another way(https://labelstud.io/guide/install):
+1. Install label-studio by pip or choose another way(https://labelstud.io/guide/install):
 
 ```pip install label-studio```
 
