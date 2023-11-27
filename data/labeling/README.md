@@ -19,3 +19,5 @@ How to deploy label-studio:
         
     <Choice value="Budget form"/><Choice value="Contract form"/></Choices>
 </View>``` 
+
+4. Don't forget to write Instructions
