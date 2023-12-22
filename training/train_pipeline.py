@@ -2,33 +2,44 @@ import wandb
 import sklearn
 import time
 
-def train_model(clf, model_name, config, X_train, y_train, X_test, y_test):
+def train_model(clf, model_name, description, X_train, y_train, X_test, y_test):
 	# init wabdb
 	wandb.init(project="MachineLearningInProduction", name = model_name)
-	wandb.config = config
 
 	# training
 	training_time = time.time()
-	model_name.fit(X_train, y_train)
+	clf.fit(X_train, y_train)
 	print(f'Train running time:  {(time.time() - training_time):.2f}')
+	train_predict_time = time.time()
+	y_train_pred = clf.predict(X_train)
+	print(f'Train set predicting running time:  {(time.time() - train_predict_time):.2f}')
+	train_metrics = {"accuracy": sklearn.metrics.accuracy_score(y_train, y_train_pred), 
+		"f1": sklearn.metrics.f1_score(y_train, y_train_pred), 
+		"recall": sklearn.metrics.recall_score(y_train, y_train_pred),
+		"precision": sklearn.metrics.precision_score(y_train, y_train_pred)}
+	print('Train metrics:\n', train_metrics)
 
 	# metrics calculation
 	testing_time = time.time()
-	y_pred = clf.predict(X_test)
-	MAE = sklearn.metrics.mean_absolute_error(y_test, y_pred)
-	RMSE = sklearn.metrics.mean_squared_error(y_test, y_pred, squared = False)
-	max_error = sklearn.metrics.max_error(y_test, y_pred)
-	R2 = sklearn.metrics.r2_score(y_test, y_pred)
-	Explained_variance = sklearn.metrics.explained_variance_score(y_test, y_pred)
+	y_test_pred = clf.predict(X_test)
 	print(f'Test running time: {(time.time() - testing_time):.2f}')
+	test_metrics = {"accuracy": sklearn.metrics.accuracy_score(y_test, y_test_pred), 
+		"f1": sklearn.metrics.f1_score(y_test, y_test_pred), 
+		"recall": sklearn.metrics.recall_score(y_test, y_test_pred),
+		"precision": sklearn.metrics.precision_score(y_test, y_test_pred)}
+	print('Test metrics:\n', test_metrics)
 
 	# logging
-	wandb.log({"MAE": MAE, "RMSE" : RMSE, "max error" : max_error, 'R2' : R2, 'explained variance score' : Explained_variance})
-	print('Result is logged')
+	params = clf.get_params()
+
+	artifact = wandb.Artifact(model_name, type='model', description=description,
+                          metadata={"parameters": params, "train_metrics": train_metrics, "test_metrics": test_metrics})
 
 	# saving model
+	import joblib
 
-	model.to_onnx()
-	wandb.save(f'models/{model_name}.onnx')
+	joblib.dump(clf, filename = f"{model_name}.joblib")
+	artifact.add_file(f"{model_name}.joblib")
+	wandb.log_artifact(artifact)
 
 	wandb.finish()
